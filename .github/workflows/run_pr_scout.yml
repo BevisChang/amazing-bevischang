@@ -1,0 +1,15 @@
+name: "PR Scout"
+on:
+  pull_request:
+    types: [ opened, edited ]
+
+jobs:
+  check_pr_ref_asana:
+    name: Asana Ticket Reference
+    runs-on: ubuntu-latest
+    steps:
+      - name: check pr discription
+        uses: PolarBearAndrew/github-pr-contains-action@v4
+        with:
+          github-token: ${{ secrets.GH_ACCESS_TOKEN  }}
+          bodyContains: 'asana.com'
