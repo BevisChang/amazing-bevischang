@@ -2,13 +2,13 @@ version: '3.4'
 
 x-env-run: &env-run
   ENV_NAMESPACE: development # options: production, staging, development
-  ENV_SERVICE_NAME: go-amazing
+  ENV_SERVICE_NAME: bevis-chang
   METRIC_API_KEY: <new-relic-insights-insert-key> # TODO: needs to be encrypted in the future
   METRIC_REFLESH_SECONDS: 1
   LOGGER_LEVEL: debug
   LOGGER_DEVELOPMENT: "true"
   LOGGER_AIRBRAKE_PROJECT_ID: 0
-  MYSQL_DSN: root:root@tcp(mysql:3306)/go-amazing?charset=utf8mb4&parseTime=True&loc=Local
+  MYSQL_DSN: root:root@tcp(mysql:3306)/bevis-chang?charset=utf8mb4&parseTime=True&loc=Local
   REDIS_ADDRS: server1:redis:6379 # support multiple addresses by the delimiter `,` eg: server1:redis:6379,server2:redis:6380
   LOCAL_CACHE_SIZE: 1048576 # = 1024*1024
   MONITOR_PERIOD_SECONDS: 5
@@ -106,8 +106,8 @@ services:
       - redis
       - etcd
 
-  go-amazing-rpc:
-    image: go-amazing-rpc:latest
+  bevis-chang-rpc:
+    image: bevis-chang-rpc:latest
     build:
       context: .
       target: rpc
@@ -126,8 +126,8 @@ services:
       - default
     command: ["/script/wait-for", "mysql:3306", "--timeout=15", "--", "/rpc"]
 
-  go-amazing-cron:
-    image: go-amazing-cron:latest
+  bevis-chang-cron:
+    image: bevis-chang-cron:latest
     build:
       context: .
       target: cron
@@ -135,7 +135,7 @@ services:
 
 networks:
   default:
-    name: go-amazing
+    name: bevis-chang
   proxy:
     external: true
     name: rails

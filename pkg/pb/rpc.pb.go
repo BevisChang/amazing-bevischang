@@ -1081,10 +1081,10 @@ var _ grpc.ClientConn
 // is compatible with the grpc package it is being compiled against.
 const _ = grpc.SupportPackageIsVersion4
 
-// GoAmazingClient is the client API for GoAmazing service.
+// BevisChangClient is the client API for BevisChang service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
-type GoAmazingClient interface {
+type BevisChangClient interface {
 	// Health check api for k8s.
 	Health(ctx context.Context, in *HealthReq, opts ...grpc.CallOption) (*HealthRes, error)
 	Config(ctx context.Context, in *ConfigReq, opts ...grpc.CallOption) (*ConfigRes, error)
@@ -1097,13 +1097,13 @@ type goAmazingClient struct {
 	cc *grpc.ClientConn
 }
 
-func NewGoAmazingClient(cc *grpc.ClientConn) GoAmazingClient {
+func NewBevisChangClient(cc *grpc.ClientConn) BevisChangClient {
 	return &goAmazingClient{cc}
 }
 
 func (c *goAmazingClient) Health(ctx context.Context, in *HealthReq, opts ...grpc.CallOption) (*HealthRes, error) {
 	out := new(HealthRes)
-	err := c.cc.Invoke(ctx, "/pb.GoAmazing/Health", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/pb.BevisChang/Health", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1112,7 +1112,7 @@ func (c *goAmazingClient) Health(ctx context.Context, in *HealthReq, opts ...grp
 
 func (c *goAmazingClient) Config(ctx context.Context, in *ConfigReq, opts ...grpc.CallOption) (*ConfigRes, error) {
 	out := new(ConfigRes)
-	err := c.cc.Invoke(ctx, "/pb.GoAmazing/Config", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/pb.BevisChang/Config", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1121,7 +1121,7 @@ func (c *goAmazingClient) Config(ctx context.Context, in *ConfigReq, opts ...grp
 
 func (c *goAmazingClient) CreateRecord(ctx context.Context, in *CreateRecordReq, opts ...grpc.CallOption) (*CreateRecordRes, error) {
 	out := new(CreateRecordRes)
-	err := c.cc.Invoke(ctx, "/pb.GoAmazing/CreateRecord", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/pb.BevisChang/CreateRecord", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1130,7 +1130,7 @@ func (c *goAmazingClient) CreateRecord(ctx context.Context, in *CreateRecordReq,
 
 func (c *goAmazingClient) GetRecord(ctx context.Context, in *GetRecordReq, opts ...grpc.CallOption) (*GetRecordRes, error) {
 	out := new(GetRecordRes)
-	err := c.cc.Invoke(ctx, "/pb.GoAmazing/GetRecord", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/pb.BevisChang/GetRecord", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1139,15 +1139,15 @@ func (c *goAmazingClient) GetRecord(ctx context.Context, in *GetRecordReq, opts 
 
 func (c *goAmazingClient) ListRecord(ctx context.Context, in *ListRecordReq, opts ...grpc.CallOption) (*ListRecordRes, error) {
 	out := new(ListRecordRes)
-	err := c.cc.Invoke(ctx, "/pb.GoAmazing/ListRecord", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/pb.BevisChang/ListRecord", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// GoAmazingServer is the server API for GoAmazing service.
-type GoAmazingServer interface {
+// BevisChangServer is the server API for BevisChang service.
+type BevisChangServer interface {
 	// Health check api for k8s.
 	Health(context.Context, *HealthReq) (*HealthRes, error)
 	Config(context.Context, *ConfigReq) (*ConfigRes, error)
@@ -1156,143 +1156,143 @@ type GoAmazingServer interface {
 	ListRecord(context.Context, *ListRecordReq) (*ListRecordRes, error)
 }
 
-// UnimplementedGoAmazingServer can be embedded to have forward compatible implementations.
-type UnimplementedGoAmazingServer struct {
+// UnimplementedBevisChangServer can be embedded to have forward compatible implementations.
+type UnimplementedBevisChangServer struct {
 }
 
-func (*UnimplementedGoAmazingServer) Health(ctx context.Context, req *HealthReq) (*HealthRes, error) {
+func (*UnimplementedBevisChangServer) Health(ctx context.Context, req *HealthReq) (*HealthRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Health not implemented")
 }
-func (*UnimplementedGoAmazingServer) Config(ctx context.Context, req *ConfigReq) (*ConfigRes, error) {
+func (*UnimplementedBevisChangServer) Config(ctx context.Context, req *ConfigReq) (*ConfigRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Config not implemented")
 }
-func (*UnimplementedGoAmazingServer) CreateRecord(ctx context.Context, req *CreateRecordReq) (*CreateRecordRes, error) {
+func (*UnimplementedBevisChangServer) CreateRecord(ctx context.Context, req *CreateRecordReq) (*CreateRecordRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateRecord not implemented")
 }
-func (*UnimplementedGoAmazingServer) GetRecord(ctx context.Context, req *GetRecordReq) (*GetRecordRes, error) {
+func (*UnimplementedBevisChangServer) GetRecord(ctx context.Context, req *GetRecordReq) (*GetRecordRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetRecord not implemented")
 }
-func (*UnimplementedGoAmazingServer) ListRecord(ctx context.Context, req *ListRecordReq) (*ListRecordRes, error) {
+func (*UnimplementedBevisChangServer) ListRecord(ctx context.Context, req *ListRecordReq) (*ListRecordRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListRecord not implemented")
 }
 
-func RegisterGoAmazingServer(s *grpc.Server, srv GoAmazingServer) {
-	s.RegisterService(&_GoAmazing_serviceDesc, srv)
+func RegisterBevisChangServer(s *grpc.Server, srv BevisChangServer) {
+	s.RegisterService(&_BevisChang_serviceDesc, srv)
 }
 
-func _GoAmazing_Health_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _BevisChang_Health_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(HealthReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GoAmazingServer).Health(ctx, in)
+		return srv.(BevisChangServer).Health(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/pb.GoAmazing/Health",
+		FullMethod: "/pb.BevisChang/Health",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GoAmazingServer).Health(ctx, req.(*HealthReq))
+		return srv.(BevisChangServer).Health(ctx, req.(*HealthReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _GoAmazing_Config_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _BevisChang_Config_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ConfigReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GoAmazingServer).Config(ctx, in)
+		return srv.(BevisChangServer).Config(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/pb.GoAmazing/Config",
+		FullMethod: "/pb.BevisChang/Config",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GoAmazingServer).Config(ctx, req.(*ConfigReq))
+		return srv.(BevisChangServer).Config(ctx, req.(*ConfigReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _GoAmazing_CreateRecord_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _BevisChang_CreateRecord_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateRecordReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GoAmazingServer).CreateRecord(ctx, in)
+		return srv.(BevisChangServer).CreateRecord(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/pb.GoAmazing/CreateRecord",
+		FullMethod: "/pb.BevisChang/CreateRecord",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GoAmazingServer).CreateRecord(ctx, req.(*CreateRecordReq))
+		return srv.(BevisChangServer).CreateRecord(ctx, req.(*CreateRecordReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _GoAmazing_GetRecord_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _BevisChang_GetRecord_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetRecordReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GoAmazingServer).GetRecord(ctx, in)
+		return srv.(BevisChangServer).GetRecord(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/pb.GoAmazing/GetRecord",
+		FullMethod: "/pb.BevisChang/GetRecord",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GoAmazingServer).GetRecord(ctx, req.(*GetRecordReq))
+		return srv.(BevisChangServer).GetRecord(ctx, req.(*GetRecordReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _GoAmazing_ListRecord_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _BevisChang_ListRecord_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListRecordReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GoAmazingServer).ListRecord(ctx, in)
+		return srv.(BevisChangServer).ListRecord(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/pb.GoAmazing/ListRecord",
+		FullMethod: "/pb.BevisChang/ListRecord",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GoAmazingServer).ListRecord(ctx, req.(*ListRecordReq))
+		return srv.(BevisChangServer).ListRecord(ctx, req.(*ListRecordReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-var _GoAmazing_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "pb.GoAmazing",
-	HandlerType: (*GoAmazingServer)(nil),
+var _BevisChang_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "pb.BevisChang",
+	HandlerType: (*BevisChangServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "Health",
-			Handler:    _GoAmazing_Health_Handler,
+			Handler:    _BevisChang_Health_Handler,
 		},
 		{
 			MethodName: "Config",
-			Handler:    _GoAmazing_Config_Handler,
+			Handler:    _BevisChang_Config_Handler,
 		},
 		{
 			MethodName: "CreateRecord",
-			Handler:    _GoAmazing_CreateRecord_Handler,
+			Handler:    _BevisChang_CreateRecord_Handler,
 		},
 		{
 			MethodName: "GetRecord",
-			Handler:    _GoAmazing_GetRecord_Handler,
+			Handler:    _BevisChang_GetRecord_Handler,
 		},
 		{
 			MethodName: "ListRecord",
-			Handler:    _GoAmazing_ListRecord_Handler,
+			Handler:    _BevisChang_ListRecord_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

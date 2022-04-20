@@ -11,7 +11,7 @@ import (
 	"google.golang.org/grpc"
 )
 
-const GoAmazingGrpcContextKey = "grpc-client-GoAmazing"
+const BevisChangGrpcContextKey = "grpc-client-BevisChang"
 
 type deferFunc func()
 
@@ -20,17 +20,17 @@ func ContextWithGrpcClient(ctx context.Context, addr string) (context.Context, d
 	if err != nil {
 		return nil, nil, err
 	}
-	client := NewGoAmazingClient(conn)
+	client := NewBevisChangClient(conn)
 	handleDeferFunc := func() {
 		conn.Close()
 	}
-	return context.WithValue(ctx, GoAmazingGrpcContextKey, &client), handleDeferFunc, nil
+	return context.WithValue(ctx, BevisChangGrpcContextKey, &client), handleDeferFunc, nil
 }
 
-func RefiningGoAmazingGrpcClientFromContext(ctx context.Context) (*GoAmazingClient, error) {
-	client, ok := ctx.Value(GoAmazingGrpcContextKey).(*GoAmazingClient)
+func RefiningBevisChangGrpcClientFromContext(ctx context.Context) (*BevisChangClient, error) {
+	client, ok := ctx.Value(BevisChangGrpcContextKey).(*BevisChangClient)
 	if !ok {
-		return nil, errors.New("RefiningGoAmazingGrpcClientFromContext failed")
+		return nil, errors.New("RefiningBevisChangGrpcClientFromContext failed")
 	}
 	return client, nil
 }
@@ -138,7 +138,7 @@ var HealthQueryType = graphql.NewObject(graphql.ObjectConfig{
 	Description: "",
 })
 
-func GoAmazingHealthResolver(p graphql.ResolveParams) (interface{}, error) {
+func BevisChangHealthResolver(p graphql.ResolveParams) (interface{}, error) {
 	type result struct {
 		data interface{}
 		err  error
@@ -147,7 +147,7 @@ func GoAmazingHealthResolver(p graphql.ResolveParams) (interface{}, error) {
 	go func() {
 		defer close(ch)
 
-		client, err := RefiningGoAmazingGrpcClientFromContext(p.Context)
+		client, err := RefiningBevisChangGrpcClientFromContext(p.Context)
 		if err != nil {
 			ch <- result{data: nil, err: err}
 			return
@@ -188,7 +188,7 @@ var ConfigQueryType = graphql.NewObject(graphql.ObjectConfig{
 	Description: "",
 })
 
-func GoAmazingConfigResolver(p graphql.ResolveParams) (interface{}, error) {
+func BevisChangConfigResolver(p graphql.ResolveParams) (interface{}, error) {
 	type result struct {
 		data interface{}
 		err  error
@@ -197,7 +197,7 @@ func GoAmazingConfigResolver(p graphql.ResolveParams) (interface{}, error) {
 	go func() {
 		defer close(ch)
 
-		client, err := RefiningGoAmazingGrpcClientFromContext(p.Context)
+		client, err := RefiningBevisChangGrpcClientFromContext(p.Context)
 		if err != nil {
 			ch <- result{data: nil, err: err}
 			return
@@ -240,7 +240,7 @@ var CreateRecordQueryType = graphql.NewObject(graphql.ObjectConfig{
 	Description: "",
 })
 
-func GoAmazingCreateRecordResolver(p graphql.ResolveParams) (interface{}, error) {
+func BevisChangCreateRecordResolver(p graphql.ResolveParams) (interface{}, error) {
 	type result struct {
 		data interface{}
 		err  error
@@ -249,7 +249,7 @@ func GoAmazingCreateRecordResolver(p graphql.ResolveParams) (interface{}, error)
 	go func() {
 		defer close(ch)
 
-		client, err := RefiningGoAmazingGrpcClientFromContext(p.Context)
+		client, err := RefiningBevisChangGrpcClientFromContext(p.Context)
 		if err != nil {
 			ch <- result{data: nil, err: err}
 			return
@@ -290,7 +290,7 @@ var GetRecordQueryType = graphql.NewObject(graphql.ObjectConfig{
 	Description: "",
 })
 
-func GoAmazingGetRecordResolver(p graphql.ResolveParams) (interface{}, error) {
+func BevisChangGetRecordResolver(p graphql.ResolveParams) (interface{}, error) {
 	type result struct {
 		data interface{}
 		err  error
@@ -299,7 +299,7 @@ func GoAmazingGetRecordResolver(p graphql.ResolveParams) (interface{}, error) {
 	go func() {
 		defer close(ch)
 
-		client, err := RefiningGoAmazingGrpcClientFromContext(p.Context)
+		client, err := RefiningBevisChangGrpcClientFromContext(p.Context)
 		if err != nil {
 			ch <- result{data: nil, err: err}
 			return
@@ -341,7 +341,7 @@ var ListRecordQueryType = graphql.NewObject(graphql.ObjectConfig{
 	Description: "",
 })
 
-func GoAmazingListRecordResolver(p graphql.ResolveParams) (interface{}, error) {
+func BevisChangListRecordResolver(p graphql.ResolveParams) (interface{}, error) {
 	type result struct {
 		data interface{}
 		err  error
@@ -350,7 +350,7 @@ func GoAmazingListRecordResolver(p graphql.ResolveParams) (interface{}, error) {
 	go func() {
 		defer close(ch)
 
-		client, err := RefiningGoAmazingGrpcClientFromContext(p.Context)
+		client, err := RefiningBevisChangGrpcClientFromContext(p.Context)
 		if err != nil {
 			ch <- result{data: nil, err: err}
 			return
@@ -379,39 +379,39 @@ func GoAmazingListRecordResolver(p graphql.ResolveParams) (interface{}, error) {
 	}, nil
 }
 
-var internalGoAmazingRootQuery = graphql.NewObject(graphql.ObjectConfig{
-	Name: "GoAmazingQuery",
+var internalBevisChangRootQuery = graphql.NewObject(graphql.ObjectConfig{
+	Name: "BevisChangQuery",
 	Fields: graphql.Fields{
 		"Health": &graphql.Field{
 			Name:    "Health",
 			Type:    HealthQueryType,
 			Args:    HealthArguments,
-			Resolve: GoAmazingHealthResolver,
+			Resolve: BevisChangHealthResolver,
 		},
 		"Config": &graphql.Field{
 			Name:    "Config",
 			Type:    ConfigQueryType,
 			Args:    ConfigArguments,
-			Resolve: GoAmazingConfigResolver,
+			Resolve: BevisChangConfigResolver,
 		},
 		"GetRecord": &graphql.Field{
 			Name:    "GetRecord",
 			Type:    GetRecordQueryType,
 			Args:    GetRecordArguments,
-			Resolve: GoAmazingGetRecordResolver,
+			Resolve: BevisChangGetRecordResolver,
 		},
 		"ListRecord": &graphql.Field{
 			Name:    "ListRecord",
 			Type:    ListRecordQueryType,
 			Args:    ListRecordArguments,
-			Resolve: GoAmazingListRecordResolver,
+			Resolve: BevisChangListRecordResolver,
 		},
 	},
 })
 
-var GoAmazingRootQueryField = graphql.Field{
-	Name: "GoAmazing",
-	Type: internalGoAmazingRootQuery,
+var BevisChangRootQueryField = graphql.Field{
+	Name: "BevisChang",
+	Type: internalBevisChangRootQuery,
 	Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 		return func() (interface{}, error) {
 			return p.Info, nil
@@ -419,21 +419,21 @@ var GoAmazingRootQueryField = graphql.Field{
 	},
 }
 
-var internalGoAmazingRootMutation = graphql.NewObject(graphql.ObjectConfig{
-	Name: "GoAmazingMutation",
+var internalBevisChangRootMutation = graphql.NewObject(graphql.ObjectConfig{
+	Name: "BevisChangMutation",
 	Fields: graphql.Fields{
 		"CreateRecord": &graphql.Field{
 			Name:    "CreateRecord",
 			Type:    CreateRecordQueryType,
 			Args:    CreateRecordArguments,
-			Resolve: GoAmazingCreateRecordResolver,
+			Resolve: BevisChangCreateRecordResolver,
 		},
 	},
 })
 
-var GoAmazingRootMutationField = graphql.Field{
-	Name: "GoAmazing",
-	Type: internalGoAmazingRootMutation,
+var BevisChangRootMutationField = graphql.Field{
+	Name: "BevisChang",
+	Type: internalBevisChangRootMutation,
 	Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 		return func() (interface{}, error) {
 			return p.Info, nil

@@ -29,16 +29,16 @@ type Collector struct {
 	ToKey   string
 }
 
-func RegisterGoAmazingHttpService(engine *gin.Engine, srv GoAmazingServer) {
+func RegisterBevisChangHttpService(engine *gin.Engine, srv BevisChangServer) {
 	adapter := NewAmazingGinHttpAdapter(srv)
 	EnrichGinRouter(engine, adapter)
 }
 
 type AmazingGinHttpAdapter struct {
-	server GoAmazingServer
+	server BevisChangServer
 }
 
-func NewAmazingGinHttpAdapter(srv GoAmazingServer) *AmazingGinHttpAdapter {
+func NewAmazingGinHttpAdapter(srv BevisChangServer) *AmazingGinHttpAdapter {
 	return &AmazingGinHttpAdapter{
 		server: srv,
 	}

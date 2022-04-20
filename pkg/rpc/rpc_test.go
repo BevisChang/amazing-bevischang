@@ -9,9 +9,9 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 
-	"github.com/AmazingTalker/go-amazing/internal/daomock"
-	"github.com/AmazingTalker/go-amazing/pkg/dao"
-	"github.com/AmazingTalker/go-amazing/pkg/pb"
+	"github.com/AmazingTalker/bevis-chang/internal/daomock"
+	"github.com/AmazingTalker/bevis-chang/pkg/dao"
+	"github.com/AmazingTalker/bevis-chang/pkg/pb"
 )
 
 func ExpectRecordMatcher(target pb.Record, expectation pb.Record) {
@@ -19,16 +19,16 @@ func ExpectRecordMatcher(target pb.Record, expectation pb.Record) {
 	Expect(target.TheNum).To(Equal(expectation.TheNum))
 }
 
-var _ = Describe("GoAmazingServer", func() {
+var _ = Describe("BevisChangServer", func() {
 
-	var serv GoAmazingServer
+	var serv BevisChangServer
 	var ctrl *gomock.Controller
 	var mockRecordDao *daomock.MockRecordDAO
 
 	BeforeEach(func() {
 		ctrl = gomock.NewController(GinkgoT())
 		mockRecordDao = daomock.NewMockRecordDAO(ctrl)
-		serv = NewGoAmazingServer(GoAmazingServerOpt{
+		serv = NewBevisChangServer(BevisChangServerOpt{
 			RecordDao: mockRecordDao,
 		})
 	})
@@ -127,7 +127,7 @@ var _ = Describe("GoAmazingServer", func() {
 	})
 })
 
-func TestGoAmazingService(t *testing.T) {
+func TestBevisChangService(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "GoAmazingService Suite")
+	RunSpecs(t, "BevisChangService Suite")
 }

@@ -1,5 +1,5 @@
 basicCoverageRate=700
-repositoryName="go-amazing"
+repositoryName="bevis-chang"
 coverageResult=$(go tool cover -func=coverage.out)
 
 # make sure this service template name wont replase by one shot init script

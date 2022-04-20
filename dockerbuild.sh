@@ -38,17 +38,17 @@ case "$1" in
   rpc)
     docker-compose down
     docker-compose run --rm build
-    docker-compose build --force-rm go-amazing-rpc
-    docker-compose up -d go-amazing-rpc
+    docker-compose build --force-rm bevis-chang-rpc
+    docker-compose up -d bevis-chang-rpc
     ;;
   build)
     docker-compose run --rm build
-    docker-compose build --force-rm go-amazing-rpc
-    docker-compose build --force-rm go-amazing-cron
+    docker-compose build --force-rm bevis-chang-rpc
+    docker-compose build --force-rm bevis-chang-cron
     ;;
   ci-build)
     docker-compose run --rm ci-build
-    docker-compose build --force-rm go-amazing-rpc
-    docker-compose build --force-rm go-amazing-cron
+    docker-compose build --force-rm bevis-chang-rpc
+    docker-compose build --force-rm bevis-chang-cron
     ;;
 esac

@@ -5,9 +5,9 @@ import (
 	"strconv"
 	"unsafe"
 
-	"github.com/AmazingTalker/go-amazing/pkg/dao"
-	"github.com/AmazingTalker/go-amazing/pkg/pb"
-	"github.com/AmazingTalker/go-amazing/pkg/rpc/config"
+	"github.com/AmazingTalker/bevis-chang/pkg/dao"
+	"github.com/AmazingTalker/bevis-chang/pkg/pb"
+	"github.com/AmazingTalker/bevis-chang/pkg/rpc/config"
 	"github.com/AmazingTalker/go-rpc-kit/logkit"
 	"github.com/AmazingTalker/go-rpc-kit/metrickit"
 	"github.com/AmazingTalker/go-rpc-kit/validatorkit"
@@ -19,32 +19,32 @@ var (
 	)
 )
 
-type GoAmazingServerOpt struct {
+type BevisChangServerOpt struct {
 	Validator validatorkit.Validator
 	RecordDao dao.RecordDAO
 }
 
-// GoAmazingServer 1. Implement a struct as you like.
-// Generate everything with an interface named "GoAmazingRPC"
-type GoAmazingServer struct {
+// BevisChangServer 1. Implement a struct as you like.
+// Generate everything with an interface named "BevisChangRPC"
+type BevisChangServer struct {
 	logkit    logkit.AmazingLogger
 	validator validatorkit.Validator
 	recordDao dao.RecordDAO
 }
 
-func NewGoAmazingServer(opt GoAmazingServerOpt) GoAmazingServer {
-	return GoAmazingServer{
+func NewBevisChangServer(opt BevisChangServerOpt) BevisChangServer {
+	return BevisChangServer{
 		validator: opt.Validator,
 		recordDao: opt.RecordDao,
 	}
 }
 
 // Health 2. Complete these methods.
-func (serv GoAmazingServer) Health(_ context.Context, _ *pb.HealthReq) (*pb.HealthRes, error) {
+func (serv BevisChangServer) Health(_ context.Context, _ *pb.HealthReq) (*pb.HealthRes, error) {
 	return &pb.HealthRes{Ok: true}, nil
 }
 
-func (serv GoAmazingServer) Config(ctx context.Context, _ *pb.ConfigReq) (*pb.ConfigRes, error) {
+func (serv BevisChangServer) Config(ctx context.Context, _ *pb.ConfigReq) (*pb.ConfigRes, error) {
 	cfg := config.Config()
 
 	return &pb.ConfigRes{
@@ -54,7 +54,7 @@ func (serv GoAmazingServer) Config(ctx context.Context, _ *pb.ConfigReq) (*pb.Co
 	}, nil
 }
 
-func (serv GoAmazingServer) CreateRecord(ctx context.Context, req *pb.CreateRecordReq) (*pb.CreateRecordRes, error) {
+func (serv BevisChangServer) CreateRecord(ctx context.Context, req *pb.CreateRecordReq) (*pb.CreateRecordRes, error) {
 	defer rpcMet.RecordDuration([]string{"time"}, map[string]string{}).End()
 
 	r := &dao.Record{
@@ -74,7 +74,7 @@ func (serv GoAmazingServer) CreateRecord(ctx context.Context, req *pb.CreateReco
 	return &resp, nil
 }
 
-func (serv GoAmazingServer) GetRecord(ctx context.Context, req *pb.GetRecordReq) (*pb.GetRecordRes, error) {
+func (serv BevisChangServer) GetRecord(ctx context.Context, req *pb.GetRecordReq) (*pb.GetRecordRes, error) {
 	defer rpcMet.RecordDuration([]string{"time"}, map[string]string{}).End()
 
 	ctx = logkit.EnrichPayload(ctx, logkit.Payload{"id": req.ID})
@@ -87,7 +87,7 @@ func (serv GoAmazingServer) GetRecord(ctx context.Context, req *pb.GetRecordReq)
 	return &resp, err
 }
 
-func (serv GoAmazingServer) ListRecord(ctx context.Context, req *pb.ListRecordReq) (*pb.ListRecordRes, error) {
+func (serv BevisChangServer) ListRecord(ctx context.Context, req *pb.ListRecordReq) (*pb.ListRecordRes, error) {
 	defer rpcMet.RecordDuration([]string{"time"}, map[string]string{}).End()
 
 	if err := serv.validator.Valid(ctx, req); err != nil {

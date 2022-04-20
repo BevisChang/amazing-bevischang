@@ -31,7 +31,7 @@ func getConnUrl() string {
 	if envUrl != "" {
 		return envUrl
 	}
-	return "root:root@tcp(localhost:3306)/go-amazing"
+	return "root:root@tcp(localhost:3306)/bevis-chang"
 }
 
 func getRingAddrs() map[string]string {

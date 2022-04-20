@@ -6,7 +6,7 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/AmazingTalker/go-amazing/pkg/pb"
+	"github.com/AmazingTalker/bevis-chang/pkg/pb"
 	"github.com/AmazingTalker/go-rpc-kit/daokit"
 )
 

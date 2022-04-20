@@ -10,9 +10,9 @@ import (
 	etcd "go.etcd.io/etcd/client/v3"
 	"google.golang.org/grpc"
 
-	"github.com/AmazingTalker/go-amazing/pkg/dao"
-	"github.com/AmazingTalker/go-amazing/pkg/pb"
-	"github.com/AmazingTalker/go-amazing/pkg/rpc"
+	"github.com/AmazingTalker/bevis-chang/pkg/dao"
+	"github.com/AmazingTalker/bevis-chang/pkg/pb"
+	"github.com/AmazingTalker/bevis-chang/pkg/rpc"
 	"github.com/AmazingTalker/go-rpc-kit/cachekit"
 	"github.com/AmazingTalker/go-rpc-kit/configkit"
 	"github.com/AmazingTalker/go-rpc-kit/envkit"
@@ -27,7 +27,7 @@ import (
 )
 
 const (
-	projName   = "go-amazing"
+	projName   = "bevis-chang"
 	configRoot = "/configs/envs/development"
 )
 
@@ -173,7 +173,7 @@ func main() {
 
 	// init server base
 	logkit.Infof(ctx, "init server")
-	serv := rpc.NewGoAmazingServer(rpc.GoAmazingServerOpt{
+	serv := rpc.NewBevisChangServer(rpc.BevisChangServerOpt{
 		Validator: validator,
 		RecordDao: dao.NewRecordDAO(db, cacheSrv),
 	})
@@ -204,7 +204,7 @@ func main() {
 }
 
 // NewGrpcSvcLauncher 3-1. You need add a gRPC listener and register the service.
-func NewGrpcSvcLauncher(addr string, serv pb.GoAmazingServer) *ServiceLauncher {
+func NewGrpcSvcLauncher(addr string, serv pb.BevisChangServer) *ServiceLauncher {
 
 	lis, err := net.Listen("tcp", addr)
 	if err != nil {
@@ -213,7 +213,7 @@ func NewGrpcSvcLauncher(addr string, serv pb.GoAmazingServer) *ServiceLauncher {
 
 	s := grpc.NewServer()
 
-	pb.RegisterGoAmazingGrpcService(s, serv) // 3-2. Run "RegisterGoAmazingGrpcService"
+	pb.RegisterBevisChangGrpcService(s, serv) // 3-2. Run "RegisterBevisChangGrpcService"
 
 	return &ServiceLauncher{
 		Labels: []string{"grpc"},
@@ -224,15 +224,15 @@ func NewGrpcSvcLauncher(addr string, serv pb.GoAmazingServer) *ServiceLauncher {
 }
 
 // NewHttpSvcLauncher 4-1. You need add a HTTP listener and register the service.
-func NewHttpSvcLauncher(addr string, serv pb.GoAmazingServer) *ServiceLauncher {
+func NewHttpSvcLauncher(addr string, serv pb.BevisChangServer) *ServiceLauncher {
 
-	// TODO: move details into RegisterGoAmazingHttpService
+	// TODO: move details into RegisterBevisChangHttpService
 
 	s := gin.New()
 	s.Use(gin.Recovery())
 	s.Use(metrickit.Middleware(metrickit.New("gin")))
 
-	pb.RegisterGoAmazingHttpService(s, serv) // 4-2. Run "RegisterGoAmazingHttpService"
+	pb.RegisterBevisChangHttpService(s, serv) // 4-2. Run "RegisterBevisChangHttpService"
 
 	return &ServiceLauncher{
 		Labels: []string{"http"},

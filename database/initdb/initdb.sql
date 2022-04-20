@@ -1,1 +1,1 @@
-CREATE DATABASE `go-amazing`;
+CREATE DATABASE `bevis-chang`;

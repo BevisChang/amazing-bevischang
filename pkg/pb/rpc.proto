@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package = "github.com/AmazingTalker/go-amazing/pkg/pb";
+option go_package = "github.com/AmazingTalker/bevis-chang/pkg/pb";
 
 package pb;
 
@@ -10,7 +10,7 @@ import "third_party/amazingtalker/atproto.proto";
 
 import "google/protobuf/timestamp.proto";
 
-service GoAmazing {
+service BevisChang {
     // Health check api for k8s.
     rpc Health(HealthReq) returns (HealthRes) {
         option (google.api.http) = {
