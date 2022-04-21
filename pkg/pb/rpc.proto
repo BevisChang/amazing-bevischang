@@ -44,6 +44,33 @@ service BevisChang {
             body: "records"
         };
     }
+
+    rpc CreateMember(CreateMemberReq) returns (CreateMemberRes) {
+        option (google.api.http) = {
+            post: "/api/members"
+            body: "member"
+        };
+    }
+
+    rpc UpdateMember(UpdateMemberReq) returns (UpdateMemberRes) {
+        option (google.api.http) = {
+            put: "/api/members/:id"
+            body: "member"
+        };
+    }
+
+    rpc ListMembers(ListMembersReq) returns (ListMembersRes) {
+        option (google.api.http) = {
+            get: "/api/members"
+            body: "member"
+        };
+    }
+
+    rpc DeleteMember(DeleteMemberReq) returns (DeleteMemberRes) {
+        option (google.api.http) = {
+            delete: "/api/members/:id"
+        };
+    }
 }
 
 message Record {
@@ -97,4 +124,50 @@ message ListRecordReq {
 message ListRecordRes {
     option (atproto.success_http_status) = "200";
     repeated Record records = 1  [(gogoproto.customname) = "Records"];
+}
+
+message Member {
+    int64 id = 1 [(gogoproto.customname) = "ID"];
+    string name = 2 [(gogoproto.customname) = "Name", (gogoproto.jsontag) = "name"];
+    int64 birthday = 3 [(gogoproto.customname) = "Birthday", (gogoproto.jsontag) = "birthday"];
+    google.protobuf.Timestamp created_at = 4 [(gogoproto.stdtime) = true, (gogoproto.customname) = "CreatedAt", (gogoproto.wktpointer) = true, (gogoproto.jsontag) = "createdAt"];
+    google.protobuf.Timestamp updated_at = 5 [(gogoproto.stdtime) = true, (gogoproto.customname) = "UpdatedAt", (gogoproto.wktpointer) = true, (gogoproto.jsontag) = "updatedAt"];
+}
+
+message CreateMemberReq {
+    string name = 1 [(gogoproto.customname) = "Name", (gogoproto.jsontag) = "name"];
+    int64 birthday = 2 [(gogoproto.customname) = "Birthday", (gogoproto.jsontag) = "birthday"];
+}
+
+message CreateMemberRes {
+    option (atproto.success_http_status) = "200";
+     Member member = 1 [(gogoproto.customname) = "Member"];
+}
+
+message UpdateMemberReq {
+    string id = 1 [(gogoproto.customname) = "ID", (gogoproto.jsontag) = "id"];
+    string name = 2 [(gogoproto.customname) = "Name", (gogoproto.jsontag) = "name"];
+    int64 birthday = 3 [(gogoproto.customname) = "Birthday", (gogoproto.jsontag) = "birthday"];
+}
+
+message UpdateMemberRes {
+    option (atproto.success_http_status) = "200";
+     Member member = 1 [(gogoproto.customname) = "Member"];
+}
+
+message ListMembersReq {
+    string birthdayBefore = 1 [(gogoproto.customname) = "BirthdayBefore", (gogoproto.jsontag) = "birthdayBefore", (atproto.frquery) = "true", (gogoproto.moretags)='validate:"required"'];
+}
+
+message ListMembersRes {
+    option (atproto.success_http_status) = "200";
+    repeated Member member = 1 [(gogoproto.customname) = "Member"];
+}
+
+message DeleteMemberReq {
+    string id = 1 [(gogoproto.customname) = "ID", (gogoproto.jsontag) = "id"];
+}
+
+message DeleteMemberRes {
+    option (atproto.success_http_status) = "200";
 }

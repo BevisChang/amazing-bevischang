@@ -35,6 +35,22 @@ func RefiningBevisChangGrpcClientFromContext(ctx context.Context) (*BevisChangCl
 	return client, nil
 }
 
+var ListMembersReqObject = graphql.NewObject(graphql.ObjectConfig{
+	Name: "ListMembersReqObject",
+	Fields: graphql.Fields{
+		"birthdayBefore": &graphql.Field{Type: graphql.String},
+	},
+	Description: "",
+})
+
+var GetRecordReqObject = graphql.NewObject(graphql.ObjectConfig{
+	Name: "GetRecordReqObject",
+	Fields: graphql.Fields{
+		"id": &graphql.Field{Type: graphql.String},
+	},
+	Description: "",
+})
+
 var GetRecordResObject = graphql.NewObject(graphql.ObjectConfig{
 	Name: "GetRecordResObject",
 	Fields: graphql.Fields{
@@ -52,23 +68,21 @@ var ListRecordReqObject = graphql.NewObject(graphql.ObjectConfig{
 	Description: "",
 })
 
-var ListRecordResObject = graphql.NewObject(graphql.ObjectConfig{
-	Name: "ListRecordResObject",
+var MemberObject = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MemberObject",
 	Fields: graphql.Fields{
-		"records": &graphql.Field{Type: graphql.NewList(RecordObject)},
+		"id":         &graphql.Field{Type: graphql.Int},
+		"name":       &graphql.Field{Type: graphql.String},
+		"birthday":   &graphql.Field{Type: graphql.Int},
+		"created_at": &graphql.Field{Type: graphql.String},
+		"updated_at": &graphql.Field{Type: graphql.String},
 	},
 	Description: "",
 })
 
-var RecordObject = graphql.NewObject(graphql.ObjectConfig{
-	Name: "RecordObject",
-	Fields: graphql.Fields{
-		"id":         &graphql.Field{Type: graphql.String},
-		"the_num":    &graphql.Field{Type: graphql.Int},
-		"the_str":    &graphql.Field{Type: graphql.String},
-		"created_at": &graphql.Field{Type: graphql.String},
-		"updated_at": &graphql.Field{Type: graphql.String},
-	},
+var HealthReqObject = graphql.NewObject(graphql.ObjectConfig{
+	Name:        "HealthReqObject",
+	Fields:      graphql.Fields{},
 	Description: "",
 })
 
@@ -80,27 +94,38 @@ var HealthResObject = graphql.NewObject(graphql.ObjectConfig{
 	Description: "",
 })
 
-var CreateRecordReqObject = graphql.NewObject(graphql.ObjectConfig{
-	Name: "CreateRecordReqObject",
+var CreateMemberResObject = graphql.NewObject(graphql.ObjectConfig{
+	Name: "CreateMemberResObject",
 	Fields: graphql.Fields{
-		"the_num":    &graphql.Field{Type: graphql.Int},
-		"the_str":    &graphql.Field{Type: graphql.String},
-		"created_at": &graphql.Field{Type: graphql.String},
+		"member": &graphql.Field{Type: MemberObject},
 	},
 	Description: "",
 })
 
-var CreateRecordResObject = graphql.NewObject(graphql.ObjectConfig{
-	Name: "CreateRecordResObject",
+var CreateMemberReqObject = graphql.NewObject(graphql.ObjectConfig{
+	Name: "CreateMemberReqObject",
 	Fields: graphql.Fields{
-		"record": &graphql.Field{Type: RecordObject},
+		"name":     &graphql.Field{Type: graphql.String},
+		"birthday": &graphql.Field{Type: graphql.Int},
 	},
 	Description: "",
 })
 
-var HealthReqObject = graphql.NewObject(graphql.ObjectConfig{
-	Name:        "HealthReqObject",
-	Fields:      graphql.Fields{},
+var UpdateMemberReqObject = graphql.NewObject(graphql.ObjectConfig{
+	Name: "UpdateMemberReqObject",
+	Fields: graphql.Fields{
+		"id":       &graphql.Field{Type: graphql.String},
+		"name":     &graphql.Field{Type: graphql.String},
+		"birthday": &graphql.Field{Type: graphql.Int},
+	},
+	Description: "",
+})
+
+var ListMembersResObject = graphql.NewObject(graphql.ObjectConfig{
+	Name: "ListMembersResObject",
+	Fields: graphql.Fields{
+		"member": &graphql.Field{Type: graphql.NewList(MemberObject)},
+	},
 	Description: "",
 })
 
@@ -120,8 +145,60 @@ var ConfigResObject = graphql.NewObject(graphql.ObjectConfig{
 	Description: "",
 })
 
-var GetRecordReqObject = graphql.NewObject(graphql.ObjectConfig{
-	Name: "GetRecordReqObject",
+var CreateRecordResObject = graphql.NewObject(graphql.ObjectConfig{
+	Name: "CreateRecordResObject",
+	Fields: graphql.Fields{
+		"record": &graphql.Field{Type: RecordObject},
+	},
+	Description: "",
+})
+
+var ListRecordResObject = graphql.NewObject(graphql.ObjectConfig{
+	Name: "ListRecordResObject",
+	Fields: graphql.Fields{
+		"records": &graphql.Field{Type: graphql.NewList(RecordObject)},
+	},
+	Description: "",
+})
+
+var DeleteMemberResObject = graphql.NewObject(graphql.ObjectConfig{
+	Name:        "DeleteMemberResObject",
+	Fields:      graphql.Fields{},
+	Description: "",
+})
+
+var RecordObject = graphql.NewObject(graphql.ObjectConfig{
+	Name: "RecordObject",
+	Fields: graphql.Fields{
+		"id":         &graphql.Field{Type: graphql.String},
+		"the_num":    &graphql.Field{Type: graphql.Int},
+		"the_str":    &graphql.Field{Type: graphql.String},
+		"created_at": &graphql.Field{Type: graphql.String},
+		"updated_at": &graphql.Field{Type: graphql.String},
+	},
+	Description: "",
+})
+
+var CreateRecordReqObject = graphql.NewObject(graphql.ObjectConfig{
+	Name: "CreateRecordReqObject",
+	Fields: graphql.Fields{
+		"the_num":    &graphql.Field{Type: graphql.Int},
+		"the_str":    &graphql.Field{Type: graphql.String},
+		"created_at": &graphql.Field{Type: graphql.String},
+	},
+	Description: "",
+})
+
+var UpdateMemberResObject = graphql.NewObject(graphql.ObjectConfig{
+	Name: "UpdateMemberResObject",
+	Fields: graphql.Fields{
+		"member": &graphql.Field{Type: MemberObject},
+	},
+	Description: "",
+})
+
+var DeleteMemberReqObject = graphql.NewObject(graphql.ObjectConfig{
+	Name: "DeleteMemberReqObject",
 	Fields: graphql.Fields{
 		"id": &graphql.Field{Type: graphql.String},
 	},
@@ -379,6 +456,207 @@ func BevisChangListRecordResolver(p graphql.ResolveParams) (interface{}, error) 
 	}, nil
 }
 
+var CreateMemberArguments = graphql.FieldConfigArgument{
+	"name":     &graphql.ArgumentConfig{Type: graphql.String},
+	"birthday": &graphql.ArgumentConfig{Type: graphql.Int},
+}
+
+var CreateMemberQueryType = graphql.NewObject(graphql.ObjectConfig{
+	Name: "CreateMemberQueryType",
+	Fields: graphql.Fields{
+		"member": &graphql.Field{Type: MemberObject},
+	},
+	Description: "",
+})
+
+func BevisChangCreateMemberResolver(p graphql.ResolveParams) (interface{}, error) {
+	type result struct {
+		data interface{}
+		err  error
+	}
+	ch := make(chan result, 1)
+	go func() {
+		defer close(ch)
+
+		client, err := RefiningBevisChangGrpcClientFromContext(p.Context)
+		if err != nil {
+			ch <- result{data: nil, err: err}
+			return
+		}
+
+		ctx, _ := context.WithTimeout(context.Background(), time.Second*30)
+		req := CreateMemberReq{}
+		if len(p.Args) != 0 {
+			err = ms.Decode(p.Args, &req)
+			if err != nil {
+				ch <- result{data: nil, err: err}
+				return
+			}
+		}
+
+		res, err := (*client).CreateMember(ctx, &req)
+		if err != nil {
+			ch <- result{data: nil, err: err}
+			return
+		}
+		ch <- result{data: res, err: nil}
+	}()
+	return func() (interface{}, error) {
+		r := <-ch
+		return r.data, r.err
+	}, nil
+}
+
+var UpdateMemberArguments = graphql.FieldConfigArgument{
+	"id":       &graphql.ArgumentConfig{Type: graphql.String},
+	"name":     &graphql.ArgumentConfig{Type: graphql.String},
+	"birthday": &graphql.ArgumentConfig{Type: graphql.Int},
+}
+
+var UpdateMemberQueryType = graphql.NewObject(graphql.ObjectConfig{
+	Name: "UpdateMemberQueryType",
+	Fields: graphql.Fields{
+		"member": &graphql.Field{Type: MemberObject},
+	},
+	Description: "",
+})
+
+func BevisChangUpdateMemberResolver(p graphql.ResolveParams) (interface{}, error) {
+	type result struct {
+		data interface{}
+		err  error
+	}
+	ch := make(chan result, 1)
+	go func() {
+		defer close(ch)
+
+		client, err := RefiningBevisChangGrpcClientFromContext(p.Context)
+		if err != nil {
+			ch <- result{data: nil, err: err}
+			return
+		}
+
+		ctx, _ := context.WithTimeout(context.Background(), time.Second*30)
+		req := UpdateMemberReq{}
+		if len(p.Args) != 0 {
+			err = ms.Decode(p.Args, &req)
+			if err != nil {
+				ch <- result{data: nil, err: err}
+				return
+			}
+		}
+
+		res, err := (*client).UpdateMember(ctx, &req)
+		if err != nil {
+			ch <- result{data: nil, err: err}
+			return
+		}
+		ch <- result{data: res, err: nil}
+	}()
+	return func() (interface{}, error) {
+		r := <-ch
+		return r.data, r.err
+	}, nil
+}
+
+var ListMembersArguments = graphql.FieldConfigArgument{
+	"birthdayBefore": &graphql.ArgumentConfig{Type: graphql.String},
+}
+
+var ListMembersQueryType = graphql.NewObject(graphql.ObjectConfig{
+	Name: "ListMembersQueryType",
+	Fields: graphql.Fields{
+		"member": &graphql.Field{Type: graphql.NewList(MemberObject)},
+	},
+	Description: "",
+})
+
+func BevisChangListMembersResolver(p graphql.ResolveParams) (interface{}, error) {
+	type result struct {
+		data interface{}
+		err  error
+	}
+	ch := make(chan result, 1)
+	go func() {
+		defer close(ch)
+
+		client, err := RefiningBevisChangGrpcClientFromContext(p.Context)
+		if err != nil {
+			ch <- result{data: nil, err: err}
+			return
+		}
+
+		ctx, _ := context.WithTimeout(context.Background(), time.Second*30)
+		req := ListMembersReq{}
+		if len(p.Args) != 0 {
+			err = ms.Decode(p.Args, &req)
+			if err != nil {
+				ch <- result{data: nil, err: err}
+				return
+			}
+		}
+
+		res, err := (*client).ListMembers(ctx, &req)
+		if err != nil {
+			ch <- result{data: nil, err: err}
+			return
+		}
+		ch <- result{data: res, err: nil}
+	}()
+	return func() (interface{}, error) {
+		r := <-ch
+		return r.data, r.err
+	}, nil
+}
+
+var DeleteMemberArguments = graphql.FieldConfigArgument{
+	"id": &graphql.ArgumentConfig{Type: graphql.String},
+}
+
+var DeleteMemberQueryType = graphql.NewObject(graphql.ObjectConfig{
+	Name:        "DeleteMemberQueryType",
+	Fields:      graphql.Fields{},
+	Description: "",
+})
+
+func BevisChangDeleteMemberResolver(p graphql.ResolveParams) (interface{}, error) {
+	type result struct {
+		data interface{}
+		err  error
+	}
+	ch := make(chan result, 1)
+	go func() {
+		defer close(ch)
+
+		client, err := RefiningBevisChangGrpcClientFromContext(p.Context)
+		if err != nil {
+			ch <- result{data: nil, err: err}
+			return
+		}
+
+		ctx, _ := context.WithTimeout(context.Background(), time.Second*30)
+		req := DeleteMemberReq{}
+		if len(p.Args) != 0 {
+			err = ms.Decode(p.Args, &req)
+			if err != nil {
+				ch <- result{data: nil, err: err}
+				return
+			}
+		}
+
+		res, err := (*client).DeleteMember(ctx, &req)
+		if err != nil {
+			ch <- result{data: nil, err: err}
+			return
+		}
+		ch <- result{data: res, err: nil}
+	}()
+	return func() (interface{}, error) {
+		r := <-ch
+		return r.data, r.err
+	}, nil
+}
+
 var internalBevisChangRootQuery = graphql.NewObject(graphql.ObjectConfig{
 	Name: "BevisChangQuery",
 	Fields: graphql.Fields{
@@ -406,6 +684,12 @@ var internalBevisChangRootQuery = graphql.NewObject(graphql.ObjectConfig{
 			Args:    ListRecordArguments,
 			Resolve: BevisChangListRecordResolver,
 		},
+		"ListMembers": &graphql.Field{
+			Name:    "ListMembers",
+			Type:    ListMembersQueryType,
+			Args:    ListMembersArguments,
+			Resolve: BevisChangListMembersResolver,
+		},
 	},
 })
 
@@ -427,6 +711,24 @@ var internalBevisChangRootMutation = graphql.NewObject(graphql.ObjectConfig{
 			Type:    CreateRecordQueryType,
 			Args:    CreateRecordArguments,
 			Resolve: BevisChangCreateRecordResolver,
+		},
+		"CreateMember": &graphql.Field{
+			Name:    "CreateMember",
+			Type:    CreateMemberQueryType,
+			Args:    CreateMemberArguments,
+			Resolve: BevisChangCreateMemberResolver,
+		},
+		"UpdateMember": &graphql.Field{
+			Name:    "UpdateMember",
+			Type:    UpdateMemberQueryType,
+			Args:    UpdateMemberArguments,
+			Resolve: BevisChangUpdateMemberResolver,
+		},
+		"DeleteMember": &graphql.Field{
+			Name:    "DeleteMember",
+			Type:    DeleteMemberQueryType,
+			Args:    DeleteMemberArguments,
+			Resolve: BevisChangDeleteMemberResolver,
 		},
 	},
 })

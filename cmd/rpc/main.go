@@ -96,13 +96,13 @@ func main() {
 		"env":         envkit.Namespace(),
 	})
 
-	if err := configkit.LaunchWatcher(ctx, configkit.Params{
-		ProjectName: projName,
-		Client:      etcdCli,
-		Env:         envkit.Namespace(),
-	}); err != nil {
-		logkit.Fatal(ctx, "configkit.LaunchWatcher failed", logkit.Payload{"err": err})
-	}
+	//if err := configkit.LaunchWatcher(ctx, configkit.Params{
+	//	ProjectName: projName,
+	//	Client:      etcdCli,
+	//	Env:         envkit.Namespace(),
+	//}); err != nil {
+	//	logkit.Fatal(ctx, "configkit.LaunchWatcher failed", logkit.Payload{"err": err})
+	//}
 
 	// init metric
 	logkit.Info(ctx, "init metric", logkit.Payload{
@@ -176,6 +176,7 @@ func main() {
 	serv := rpc.NewBevisChangServer(rpc.BevisChangServerOpt{
 		Validator: validator,
 		RecordDao: dao.NewRecordDAO(db, cacheSrv),
+		MemberDao: dao.NewMemberDAO(db, cacheSrv),
 	})
 
 	// init service

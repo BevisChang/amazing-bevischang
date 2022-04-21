@@ -63,6 +63,14 @@ func EnrichGinRouter(e *gin.Engine, adapter *AmazingGinHttpAdapter) {
 
 	e.Handle(http.MethodGet, "/api/records", adapter.ListRecordHandler)
 
+	e.Handle(http.MethodPost, "/api/members", adapter.CreateMemberHandler)
+
+	e.Handle(http.MethodPut, "/api/members/:id", adapter.UpdateMemberHandler)
+
+	e.Handle(http.MethodGet, "/api/members", adapter.ListMembersHandler)
+
+	e.Handle(http.MethodDelete, "/api/members/:id", adapter.DeleteMemberHandler)
+
 }
 
 func (a *AmazingGinHttpAdapter) HealthHandler(ctx *gin.Context) {
@@ -282,6 +290,186 @@ func (a *AmazingGinHttpAdapter) ListRecordHandler(ctx *gin.Context) {
 	}
 
 	output, err := jsonpbkit.MarshalJsonBuffersToString(buf)
+
+	if err != nil {
+		e := errorkit.FormatError(err)
+		ctx.JSON(e.HttpStatus(), e.GinHashMap())
+		return
+	}
+
+	ctx.String(200, output)
+}
+
+func (a *AmazingGinHttpAdapter) CreateMemberHandler(ctx *gin.Context) {
+
+	req := &CreateMemberReq{}
+
+	err := jsonpbkit.Unmarshal(ctx.Request.Body, req)
+
+	if err != nil && err != io.EOF {
+		logkit.Errorf(ctx, "unmarshal body failed", logkit.Payload{"err": err})
+		e := errorkit.NewFromError(errCodes.ErrUnmarshalBodyFailed, err, errorkit.WithHttpStatusCode(http.StatusBadRequest))
+		ctx.JSON(e.HttpStatus(), e.GinHashMap())
+		return
+	}
+
+	ctx = logkit.EnrichRequestPayload(ctx, req)
+
+	resp, err := a.server.CreateMember(contextkit.ParseGinContext(ctx), req)
+
+	if err != nil {
+		e := errorkit.FormatError(err)
+		ctx.JSON(e.HttpStatus(), e.GinHashMap())
+		return
+	}
+
+	ctx.Header("content-type", "application/json")
+
+	if resp == nil {
+		ctx.String(204, "")
+		return
+	}
+
+	output, err := jsonpbkit.MarshalToString(resp.Member)
+
+	if err != nil {
+		e := errorkit.FormatError(err)
+		ctx.JSON(e.HttpStatus(), e.GinHashMap())
+		return
+	}
+
+	ctx.String(200, output)
+}
+
+func (a *AmazingGinHttpAdapter) UpdateMemberHandler(ctx *gin.Context) {
+
+	req := &UpdateMemberReq{}
+
+	err := jsonpbkit.Unmarshal(ctx.Request.Body, req)
+
+	if err != nil && err != io.EOF {
+		logkit.Errorf(ctx, "unmarshal body failed", logkit.Payload{"err": err})
+		e := errorkit.NewFromError(errCodes.ErrUnmarshalBodyFailed, err, errorkit.WithHttpStatusCode(http.StatusBadRequest))
+		ctx.JSON(e.HttpStatus(), e.GinHashMap())
+		return
+	}
+
+	ctx = logkit.EnrichRequestPayload(ctx, req)
+
+	resp, err := a.server.UpdateMember(contextkit.ParseGinContext(ctx), req)
+
+	if err != nil {
+		e := errorkit.FormatError(err)
+		ctx.JSON(e.HttpStatus(), e.GinHashMap())
+		return
+	}
+
+	ctx.Header("content-type", "application/json")
+
+	if resp == nil {
+		ctx.String(204, "")
+		return
+	}
+
+	output, err := jsonpbkit.MarshalToString(resp.Member)
+
+	if err != nil {
+		e := errorkit.FormatError(err)
+		ctx.JSON(e.HttpStatus(), e.GinHashMap())
+		return
+	}
+
+	ctx.String(200, output)
+}
+
+func (a *AmazingGinHttpAdapter) ListMembersHandler(ctx *gin.Context) {
+
+	req := &ListMembersReq{}
+
+	err := jsonpbkit.Unmarshal(ctx.Request.Body, req)
+
+	if err != nil && err != io.EOF {
+		logkit.Errorf(ctx, "unmarshal body failed", logkit.Payload{"err": err})
+		e := errorkit.NewFromError(errCodes.ErrUnmarshalBodyFailed, err, errorkit.WithHttpStatusCode(http.StatusBadRequest))
+		ctx.JSON(e.HttpStatus(), e.GinHashMap())
+		return
+	}
+
+	v_BirthdayBefore, _ := ctx.GetQuery("birthdayBefore")
+	req.BirthdayBefore = v_BirthdayBefore
+
+	ctx = logkit.EnrichRequestPayload(ctx, req)
+
+	resp, err := a.server.ListMembers(contextkit.ParseGinContext(ctx), req)
+
+	if err != nil {
+		e := errorkit.FormatError(err)
+		ctx.JSON(e.HttpStatus(), e.GinHashMap())
+		return
+	}
+
+	ctx.Header("content-type", "application/json")
+
+	if resp == nil {
+		ctx.String(204, "")
+		return
+	}
+
+	buf := make([]bytes.Buffer, len(resp.Member))
+	for i, m := range resp.Member {
+		m := m
+		var out bytes.Buffer
+		if err := jsonpbkit.Marshal(&out, m); err != nil {
+			logkit.Errorf(ctx, "marshal response failed", logkit.Payload{"err": err})
+			e := errorkit.NewFromError(errCodes.ErrMarshalResponseFailed, err, errorkit.WithHttpStatusCode(http.StatusInternalServerError))
+			ctx.JSON(e.HttpStatus(), e.GinHashMap())
+			return
+		}
+		buf[i] = out
+	}
+
+	output, err := jsonpbkit.MarshalJsonBuffersToString(buf)
+
+	if err != nil {
+		e := errorkit.FormatError(err)
+		ctx.JSON(e.HttpStatus(), e.GinHashMap())
+		return
+	}
+
+	ctx.String(200, output)
+}
+
+func (a *AmazingGinHttpAdapter) DeleteMemberHandler(ctx *gin.Context) {
+
+	req := &DeleteMemberReq{}
+
+	err := jsonpbkit.Unmarshal(ctx.Request.Body, req)
+
+	if err != nil && err != io.EOF {
+		logkit.Errorf(ctx, "unmarshal body failed", logkit.Payload{"err": err})
+		e := errorkit.NewFromError(errCodes.ErrUnmarshalBodyFailed, err, errorkit.WithHttpStatusCode(http.StatusBadRequest))
+		ctx.JSON(e.HttpStatus(), e.GinHashMap())
+		return
+	}
+
+	ctx = logkit.EnrichRequestPayload(ctx, req)
+
+	resp, err := a.server.DeleteMember(contextkit.ParseGinContext(ctx), req)
+
+	if err != nil {
+		e := errorkit.FormatError(err)
+		ctx.JSON(e.HttpStatus(), e.GinHashMap())
+		return
+	}
+
+	ctx.Header("content-type", "application/json")
+
+	if resp == nil {
+		ctx.String(204, "")
+		return
+	}
+
+	output, err := jsonpbkit.MarshalToString(resp)
 
 	if err != nil {
 		e := errorkit.FormatError(err)

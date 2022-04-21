@@ -2,6 +2,7 @@ package rpc
 
 import (
 	"context"
+	"fmt"
 	"strconv"
 	"unsafe"
 
@@ -22,6 +23,7 @@ var (
 type BevisChangServerOpt struct {
 	Validator validatorkit.Validator
 	RecordDao dao.RecordDAO
+	MemberDao dao.MemberDAO
 }
 
 // BevisChangServer 1. Implement a struct as you like.
@@ -30,12 +32,14 @@ type BevisChangServer struct {
 	logkit    logkit.AmazingLogger
 	validator validatorkit.Validator
 	recordDao dao.RecordDAO
+	memberDao dao.MemberDAO
 }
 
 func NewBevisChangServer(opt BevisChangServerOpt) BevisChangServer {
 	return BevisChangServer{
 		validator: opt.Validator,
 		recordDao: opt.RecordDao,
+		memberDao: opt.MemberDao,
 	}
 }
 
@@ -118,4 +122,74 @@ func (serv BevisChangServer) ListRecord(ctx context.Context, req *pb.ListRecordR
 	rpcMet.SetGauge([]string{"resp_size"}, float64(unsafe.Sizeof(resp)), map[string]string{})
 
 	return &resp, nil
+}
+
+func (serv BevisChangServer) CreateMember(ctx context.Context, req *pb.CreateMemberReq) (*pb.CreateMemberRes, error) {
+	m := &dao.Member{
+		Name:     req.Name,
+		Birthday: req.Birthday,
+	}
+
+	err := serv.memberDao.CreateMember(ctx, m)
+
+	if err != nil {
+		return nil, err
+	}
+
+	resp := pb.CreateMemberRes{Member: m.FormatPb()}
+	//rpcMet.SetGauge([]string{"resp_size"}, float64(unsafe.Sizeof(resp)), map[string]string{})
+
+	return &resp, nil
+}
+
+func (serv BevisChangServer) UpdateMember(ctx context.Context, req *pb.UpdateMemberReq) (*pb.UpdateMemberRes, error) {
+	id, _ := strconv.ParseInt(req.ID, 10, 64)
+	m := &dao.Member{
+		ID:       id,
+		Name:     req.Name,
+		Birthday: req.Birthday,
+	}
+
+	updatedMember, err := serv.memberDao.UpdateMember(ctx, m)
+
+	if err != nil {
+		return nil, err
+	}
+
+	resp := pb.UpdateMemberRes{Member: updatedMember.FormatPb()}
+
+	return &resp, nil
+}
+
+func (serv BevisChangServer) ListMembers(ctx context.Context, req *pb.ListMembersReq) (*pb.ListMembersRes, error) {
+	birthdayBefore, _ := strconv.ParseInt(req.BirthdayBefore, 10, 64)
+	members, err := serv.memberDao.ListMembers(ctx, birthdayBefore)
+
+	if err != nil {
+		return nil, err
+	}
+
+	result := make([]*pb.Member, len(members))
+
+	for i, m := range members {
+		m := m
+		result[i] = m.FormatPb()
+	}
+
+	resp := pb.ListMembersRes{Member: result}
+
+	return &resp, nil
+}
+
+func (serv BevisChangServer) DeleteMember(ctx context.Context, req *pb.DeleteMemberReq) (*pb.DeleteMemberRes, error) {
+	fmt.Println(req)
+	id, _ := strconv.ParseInt(req.ID, 10, 64)
+
+	err := serv.memberDao.DeleteMember(ctx, id)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return nil, nil
 }
