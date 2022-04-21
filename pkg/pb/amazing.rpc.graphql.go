@@ -35,6 +35,79 @@ func RefiningBevisChangGrpcClientFromContext(ctx context.Context) (*BevisChangCl
 	return client, nil
 }
 
+var CreateRecordReqObject = graphql.NewObject(graphql.ObjectConfig{
+	Name: "CreateRecordReqObject",
+	Fields: graphql.Fields{
+		"the_num":    &graphql.Field{Type: graphql.Int},
+		"the_str":    &graphql.Field{Type: graphql.String},
+		"created_at": &graphql.Field{Type: graphql.String},
+	},
+	Description: "",
+})
+
+var ListRecordResObject = graphql.NewObject(graphql.ObjectConfig{
+	Name: "ListRecordResObject",
+	Fields: graphql.Fields{
+		"records": &graphql.Field{Type: graphql.NewList(RecordObject)},
+	},
+	Description: "",
+})
+
+var CreateMemberReqObject = graphql.NewObject(graphql.ObjectConfig{
+	Name: "CreateMemberReqObject",
+	Fields: graphql.Fields{
+		"name":     &graphql.Field{Type: graphql.String},
+		"birthday": &graphql.Field{Type: graphql.Int},
+	},
+	Description: "",
+})
+
+var UpdateMemberReqObject = graphql.NewObject(graphql.ObjectConfig{
+	Name: "UpdateMemberReqObject",
+	Fields: graphql.Fields{
+		"id":       &graphql.Field{Type: graphql.String},
+		"name":     &graphql.Field{Type: graphql.String},
+		"birthday": &graphql.Field{Type: graphql.Int},
+	},
+	Description: "",
+})
+
+var DeleteMemberReqObject = graphql.NewObject(graphql.ObjectConfig{
+	Name: "DeleteMemberReqObject",
+	Fields: graphql.Fields{
+		"id": &graphql.Field{Type: graphql.String},
+	},
+	Description: "",
+})
+
+var DeleteMemberResObject = graphql.NewObject(graphql.ObjectConfig{
+	Name:        "DeleteMemberResObject",
+	Fields:      graphql.Fields{},
+	Description: "",
+})
+
+var ConfigReqObject = graphql.NewObject(graphql.ObjectConfig{
+	Name:        "ConfigReqObject",
+	Fields:      graphql.Fields{},
+	Description: "",
+})
+
+var GetRecordReqObject = graphql.NewObject(graphql.ObjectConfig{
+	Name: "GetRecordReqObject",
+	Fields: graphql.Fields{
+		"id": &graphql.Field{Type: graphql.String},
+	},
+	Description: "",
+})
+
+var CreateMemberResObject = graphql.NewObject(graphql.ObjectConfig{
+	Name: "CreateMemberResObject",
+	Fields: graphql.Fields{
+		"member": &graphql.Field{Type: MemberObject},
+	},
+	Description: "",
+})
+
 var ListMembersReqObject = graphql.NewObject(graphql.ObjectConfig{
 	Name: "ListMembersReqObject",
 	Fields: graphql.Fields{
@@ -43,10 +116,18 @@ var ListMembersReqObject = graphql.NewObject(graphql.ObjectConfig{
 	Description: "",
 })
 
-var GetRecordReqObject = graphql.NewObject(graphql.ObjectConfig{
-	Name: "GetRecordReqObject",
+var ListMembersResObject = graphql.NewObject(graphql.ObjectConfig{
+	Name: "ListMembersResObject",
 	Fields: graphql.Fields{
-		"id": &graphql.Field{Type: graphql.String},
+		"member": &graphql.Field{Type: graphql.NewList(MemberObject)},
+	},
+	Description: "",
+})
+
+var CreateRecordResObject = graphql.NewObject(graphql.ObjectConfig{
+	Name: "CreateRecordResObject",
+	Fields: graphql.Fields{
+		"record": &graphql.Field{Type: RecordObject},
 	},
 	Description: "",
 })
@@ -80,6 +161,18 @@ var MemberObject = graphql.NewObject(graphql.ObjectConfig{
 	Description: "",
 })
 
+var RecordObject = graphql.NewObject(graphql.ObjectConfig{
+	Name: "RecordObject",
+	Fields: graphql.Fields{
+		"id":         &graphql.Field{Type: graphql.String},
+		"the_num":    &graphql.Field{Type: graphql.Int},
+		"the_str":    &graphql.Field{Type: graphql.String},
+		"created_at": &graphql.Field{Type: graphql.String},
+		"updated_at": &graphql.Field{Type: graphql.String},
+	},
+	Description: "",
+})
+
 var HealthReqObject = graphql.NewObject(graphql.ObjectConfig{
 	Name:        "HealthReqObject",
 	Fields:      graphql.Fields{},
@@ -94,47 +187,6 @@ var HealthResObject = graphql.NewObject(graphql.ObjectConfig{
 	Description: "",
 })
 
-var CreateMemberResObject = graphql.NewObject(graphql.ObjectConfig{
-	Name: "CreateMemberResObject",
-	Fields: graphql.Fields{
-		"member": &graphql.Field{Type: MemberObject},
-	},
-	Description: "",
-})
-
-var CreateMemberReqObject = graphql.NewObject(graphql.ObjectConfig{
-	Name: "CreateMemberReqObject",
-	Fields: graphql.Fields{
-		"name":     &graphql.Field{Type: graphql.String},
-		"birthday": &graphql.Field{Type: graphql.Int},
-	},
-	Description: "",
-})
-
-var UpdateMemberReqObject = graphql.NewObject(graphql.ObjectConfig{
-	Name: "UpdateMemberReqObject",
-	Fields: graphql.Fields{
-		"id":       &graphql.Field{Type: graphql.String},
-		"name":     &graphql.Field{Type: graphql.String},
-		"birthday": &graphql.Field{Type: graphql.Int},
-	},
-	Description: "",
-})
-
-var ListMembersResObject = graphql.NewObject(graphql.ObjectConfig{
-	Name: "ListMembersResObject",
-	Fields: graphql.Fields{
-		"member": &graphql.Field{Type: graphql.NewList(MemberObject)},
-	},
-	Description: "",
-})
-
-var ConfigReqObject = graphql.NewObject(graphql.ObjectConfig{
-	Name:        "ConfigReqObject",
-	Fields:      graphql.Fields{},
-	Description: "",
-})
-
 var ConfigResObject = graphql.NewObject(graphql.ObjectConfig{
 	Name: "ConfigResObject",
 	Fields: graphql.Fields{
@@ -145,62 +197,10 @@ var ConfigResObject = graphql.NewObject(graphql.ObjectConfig{
 	Description: "",
 })
 
-var CreateRecordResObject = graphql.NewObject(graphql.ObjectConfig{
-	Name: "CreateRecordResObject",
-	Fields: graphql.Fields{
-		"record": &graphql.Field{Type: RecordObject},
-	},
-	Description: "",
-})
-
-var ListRecordResObject = graphql.NewObject(graphql.ObjectConfig{
-	Name: "ListRecordResObject",
-	Fields: graphql.Fields{
-		"records": &graphql.Field{Type: graphql.NewList(RecordObject)},
-	},
-	Description: "",
-})
-
-var DeleteMemberResObject = graphql.NewObject(graphql.ObjectConfig{
-	Name:        "DeleteMemberResObject",
-	Fields:      graphql.Fields{},
-	Description: "",
-})
-
-var RecordObject = graphql.NewObject(graphql.ObjectConfig{
-	Name: "RecordObject",
-	Fields: graphql.Fields{
-		"id":         &graphql.Field{Type: graphql.String},
-		"the_num":    &graphql.Field{Type: graphql.Int},
-		"the_str":    &graphql.Field{Type: graphql.String},
-		"created_at": &graphql.Field{Type: graphql.String},
-		"updated_at": &graphql.Field{Type: graphql.String},
-	},
-	Description: "",
-})
-
-var CreateRecordReqObject = graphql.NewObject(graphql.ObjectConfig{
-	Name: "CreateRecordReqObject",
-	Fields: graphql.Fields{
-		"the_num":    &graphql.Field{Type: graphql.Int},
-		"the_str":    &graphql.Field{Type: graphql.String},
-		"created_at": &graphql.Field{Type: graphql.String},
-	},
-	Description: "",
-})
-
 var UpdateMemberResObject = graphql.NewObject(graphql.ObjectConfig{
 	Name: "UpdateMemberResObject",
 	Fields: graphql.Fields{
 		"member": &graphql.Field{Type: MemberObject},
-	},
-	Description: "",
-})
-
-var DeleteMemberReqObject = graphql.NewObject(graphql.ObjectConfig{
-	Name: "DeleteMemberReqObject",
-	Fields: graphql.Fields{
-		"id": &graphql.Field{Type: graphql.String},
 	},
 	Description: "",
 })

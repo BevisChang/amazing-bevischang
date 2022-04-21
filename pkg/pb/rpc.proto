@@ -55,7 +55,6 @@ service BevisChang {
     rpc UpdateMember(UpdateMemberReq) returns (UpdateMemberRes) {
         option (google.api.http) = {
             put: "/api/members/:id"
-            body: "member"
         };
     }
 
@@ -165,7 +164,7 @@ message ListMembersRes {
 }
 
 message DeleteMemberReq {
-    string id = 1 [(gogoproto.customname) = "ID", (gogoproto.jsontag) = "id"];
+    string id = 1 [(gogoproto.customname) = "ID", (gogoproto.jsontag) = "id", (atproto.frparams) = "true"];
 }
 
 message DeleteMemberRes {

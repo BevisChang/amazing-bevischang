@@ -2,7 +2,6 @@ package rpc
 
 import (
 	"context"
-	"fmt"
 	"strconv"
 	"unsafe"
 
@@ -182,7 +181,6 @@ func (serv BevisChangServer) ListMembers(ctx context.Context, req *pb.ListMember
 }
 
 func (serv BevisChangServer) DeleteMember(ctx context.Context, req *pb.DeleteMemberReq) (*pb.DeleteMemberRes, error) {
-	fmt.Println(req)
 	id, _ := strconv.ParseInt(req.ID, 10, 64)
 
 	err := serv.memberDao.DeleteMember(ctx, id)

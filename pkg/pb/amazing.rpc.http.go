@@ -371,7 +371,7 @@ func (a *AmazingGinHttpAdapter) UpdateMemberHandler(ctx *gin.Context) {
 		return
 	}
 
-	output, err := jsonpbkit.MarshalToString(resp.Member)
+	output, err := jsonpbkit.MarshalToString(resp)
 
 	if err != nil {
 		e := errorkit.FormatError(err)
@@ -451,6 +451,9 @@ func (a *AmazingGinHttpAdapter) DeleteMemberHandler(ctx *gin.Context) {
 		ctx.JSON(e.HttpStatus(), e.GinHashMap())
 		return
 	}
+
+	v_ID := ctx.Param("id")
+	req.ID = v_ID
 
 	ctx = logkit.EnrichRequestPayload(ctx, req)
 
