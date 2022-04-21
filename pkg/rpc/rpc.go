@@ -3,6 +3,7 @@ package rpc
 import (
 	"context"
 	"strconv"
+	"time"
 	"unsafe"
 
 	"github.com/AmazingTalker/bevis-chang/pkg/dao"
@@ -161,7 +162,7 @@ func (serv BevisChangServer) UpdateMember(ctx context.Context, req *pb.UpdateMem
 }
 
 func (serv BevisChangServer) ListMembers(ctx context.Context, req *pb.ListMembersReq) (*pb.ListMembersRes, error) {
-	birthdayBefore, _ := strconv.ParseInt(req.BirthdayBefore, 10, 64)
+	birthdayBefore, _ := time.Parse(time.RFC3339, req.BirthdayBefore)
 	members, err := serv.memberDao.ListMembers(ctx, birthdayBefore)
 
 	if err != nil {

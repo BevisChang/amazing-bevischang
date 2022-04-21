@@ -128,14 +128,14 @@ message ListRecordRes {
 message Member {
     int64 id = 1 [(gogoproto.customname) = "ID"];
     string name = 2 [(gogoproto.customname) = "Name", (gogoproto.jsontag) = "name"];
-    int64 birthday = 3 [(gogoproto.customname) = "Birthday", (gogoproto.jsontag) = "birthday"];
+    google.protobuf.Timestamp birthday = 3 [(gogoproto.stdtime) = true, (gogoproto.customname) = "Birthday", (gogoproto.wktpointer) = true, (gogoproto.jsontag) = "birthday"];
     google.protobuf.Timestamp created_at = 4 [(gogoproto.stdtime) = true, (gogoproto.customname) = "CreatedAt", (gogoproto.wktpointer) = true, (gogoproto.jsontag) = "createdAt"];
     google.protobuf.Timestamp updated_at = 5 [(gogoproto.stdtime) = true, (gogoproto.customname) = "UpdatedAt", (gogoproto.wktpointer) = true, (gogoproto.jsontag) = "updatedAt"];
 }
 
 message CreateMemberReq {
     string name = 1 [(gogoproto.customname) = "Name", (gogoproto.jsontag) = "name"];
-    int64 birthday = 2 [(gogoproto.customname) = "Birthday", (gogoproto.jsontag) = "birthday"];
+    google.protobuf.Timestamp birthday = 2 [(gogoproto.stdtime) = true, (gogoproto.customname) = "Birthday", (gogoproto.wktpointer) = true, (gogoproto.jsontag) = "birthday"];
 }
 
 message CreateMemberRes {
@@ -144,9 +144,9 @@ message CreateMemberRes {
 }
 
 message UpdateMemberReq {
-    string id = 1 [(gogoproto.customname) = "ID", (gogoproto.jsontag) = "id"];
+    string id = 1 [(gogoproto.customname) = "ID", (gogoproto.jsontag) = "id", (atproto.frparams) = "true"];
     string name = 2 [(gogoproto.customname) = "Name", (gogoproto.jsontag) = "name"];
-    int64 birthday = 3 [(gogoproto.customname) = "Birthday", (gogoproto.jsontag) = "birthday"];
+    google.protobuf.Timestamp birthday = 3 [(gogoproto.stdtime) = true, (gogoproto.customname) = "Birthday", (gogoproto.wktpointer) = true, (gogoproto.jsontag) = "birthday"];
 }
 
 message UpdateMemberRes {

@@ -354,6 +354,9 @@ func (a *AmazingGinHttpAdapter) UpdateMemberHandler(ctx *gin.Context) {
 		return
 	}
 
+	v_ID := ctx.Param("id")
+	req.ID = v_ID
+
 	ctx = logkit.EnrichRequestPayload(ctx, req)
 
 	resp, err := a.server.UpdateMember(contextkit.ParseGinContext(ctx), req)

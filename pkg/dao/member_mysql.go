@@ -3,6 +3,7 @@ package dao
 import (
 	"context"
 	"gorm.io/gorm"
+	"time"
 
 	"github.com/AmazingTalker/go-rpc-kit/daokit"
 )
@@ -37,7 +38,7 @@ func (dao MySqlMemberDAO) UpdateMember(ctx context.Context, member *Member, enri
 	return targetMember, nil
 }
 
-func (dao MySqlMemberDAO) ListMembers(ctx context.Context, birthdayBefore int64, enrich []daokit.Enrich) ([]Member, error) {
+func (dao MySqlMemberDAO) ListMembers(ctx context.Context, birthdayBefore time.Time, enrich []daokit.Enrich) ([]Member, error) {
 	db, _ := daokit.UseTxOrDB(dao.db, enrich...)
 
 	var members []Member
