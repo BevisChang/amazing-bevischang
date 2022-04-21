@@ -20,7 +20,7 @@ func (im *MemberImpl) CreateMember(ctx context.Context, member *Member, enrich .
 	return im.mysql.CreateMember(ctx, member, enrich...)
 }
 
-func (im *MemberImpl) UpdateMember(ctx context.Context, member *Member, enrich ...daokit.Enrich) (Member, error) {
+func (im *MemberImpl) UpdateMember(ctx context.Context, member *Member, enrich ...daokit.Enrich) (*Member, error) {
 	return im.mysql.UpdateMember(ctx, member, enrich...)
 }
 

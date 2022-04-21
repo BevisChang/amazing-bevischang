@@ -28,14 +28,14 @@ func (dao MySqlMemberDAO) CreateMember(ctx context.Context, member *Member, enri
 	return nil
 }
 
-func (dao MySqlMemberDAO) UpdateMember(ctx context.Context, member *Member, enrich ...daokit.Enrich) (Member, error) {
+func (dao MySqlMemberDAO) UpdateMember(ctx context.Context, member *Member, enrich ...daokit.Enrich) (*Member, error) {
 	db, _ := daokit.UseTxOrDB(dao.db, enrich...)
 
 	targetMember := Member{}
 	db.First(&targetMember, member.ID)
 	db.Model(&targetMember).Updates(member)
 
-	return targetMember, nil
+	return &targetMember, nil
 }
 
 func (dao MySqlMemberDAO) ListMembers(ctx context.Context, birthdayBefore time.Time, enrich []daokit.Enrich) ([]Member, error) {
