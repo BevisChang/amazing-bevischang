@@ -24,10 +24,10 @@ func (im *MemberImpl) UpdateMember(ctx context.Context, member *Member, enrich .
 	return im.mysql.UpdateMember(ctx, member, enrich...)
 }
 
-func (im *MemberImpl) ListMembers(ctx context.Context, birthdayBefore time.Time, enrich ...daokit.Enrich) ([]Member, error) {
-	return im.mysql.ListMembers(ctx, birthdayBefore, enrich)
+func (im *MemberImpl) ListMembers(ctx context.Context, birthdayBefore *time.Time, enrich ...daokit.Enrich) ([]Member, error) {
+	return im.mysql.ListMembers(ctx, birthdayBefore, enrich...)
 }
 
 func (im *MemberImpl) DeleteMember(ctx context.Context, id int64, enrich ...daokit.Enrich) error {
-	return im.mysql.DeleteMember(ctx, id, enrich)
+	return im.mysql.DeleteMember(ctx, id, enrich...)
 }

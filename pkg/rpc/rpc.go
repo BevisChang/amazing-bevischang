@@ -163,7 +163,7 @@ func (serv BevisChangServer) UpdateMember(ctx context.Context, req *pb.UpdateMem
 
 func (serv BevisChangServer) ListMembers(ctx context.Context, req *pb.ListMembersReq) (*pb.ListMembersRes, error) {
 	birthdayBefore, _ := time.Parse(time.RFC3339, req.BirthdayBefore)
-	members, err := serv.memberDao.ListMembers(ctx, birthdayBefore)
+	members, err := serv.memberDao.ListMembers(ctx, &birthdayBefore)
 
 	if err != nil {
 		return nil, err

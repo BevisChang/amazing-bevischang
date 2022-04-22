@@ -38,16 +38,16 @@ func (dao MySqlMemberDAO) UpdateMember(ctx context.Context, member *Member, enri
 	return &targetMember, nil
 }
 
-func (dao MySqlMemberDAO) ListMembers(ctx context.Context, birthdayBefore time.Time, enrich []daokit.Enrich) ([]Member, error) {
+func (dao MySqlMemberDAO) ListMembers(ctx context.Context, birthdayBefore *time.Time, enrich ...daokit.Enrich) ([]Member, error) {
 	db, _ := daokit.UseTxOrDB(dao.db, enrich...)
 
 	var members []Member
-	db.Where("birthday < ?", birthdayBefore).Find(&members)
+	db.Where("birthday <= ?", &birthdayBefore).Find(&members)
 
 	return members, nil
 }
 
-func (dao MySqlMemberDAO) DeleteMember(ctx context.Context, id int64, enrich []daokit.Enrich) error {
+func (dao MySqlMemberDAO) DeleteMember(ctx context.Context, id int64, enrich ...daokit.Enrich) error {
 	db, _ := daokit.UseTxOrDB(dao.db, enrich...)
 
 	db.Delete(&Member{}, id)
