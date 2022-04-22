@@ -3,15 +3,17 @@ package rpc
 import (
 	"context"
 	"errors"
-	"github.com/AmazingTalker/bevis-chang/internal/daomock"
-	"github.com/AmazingTalker/bevis-chang/pkg/dao"
-	"github.com/AmazingTalker/bevis-chang/pkg/pb"
-	"github.com/golang/mock/gomock"
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
 	"strconv"
 	"testing"
 	"time"
+
+	"github.com/golang/mock/gomock"
+	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
+
+	"github.com/AmazingTalker/bevis-chang/internal/daomock"
+	"github.com/AmazingTalker/bevis-chang/pkg/dao"
+	"github.com/AmazingTalker/bevis-chang/pkg/pb"
 )
 
 func ExpectRecordMatcher(target pb.Record, expectation pb.Record) {
