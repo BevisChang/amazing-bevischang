@@ -3,17 +3,15 @@ package rpc
 import (
 	"context"
 	"errors"
-	"strconv"
-	"testing"
-	"time"
-
-	"github.com/golang/mock/gomock"
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
-
 	"github.com/AmazingTalker/bevis-chang/internal/daomock"
 	"github.com/AmazingTalker/bevis-chang/pkg/dao"
 	"github.com/AmazingTalker/bevis-chang/pkg/pb"
+	"github.com/golang/mock/gomock"
+	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
+	"strconv"
+	"testing"
+	"time"
 )
 
 func ExpectRecordMatcher(target pb.Record, expectation pb.Record) {
@@ -143,14 +141,11 @@ var _ = Describe("BevisChangServer", func() {
 			})
 
 			Describe("success", func() {
-				// my test case
-
 				req = &pb.CreateMemberReq{
 					Name:     "John",
 					Birthday: &now,
 				}
 
-				// the expectation of dao method arguments
 				expectCreateArg1 := &dao.Member{
 					Name:     req.Name,
 					Birthday: req.Birthday,
@@ -192,21 +187,18 @@ var _ = Describe("BevisChangServer", func() {
 			})
 
 			Describe("success", func() {
-				// my test case
-
 				req = &pb.UpdateMemberReq{
 					ID:       "1",
 					Name:     "John",
 					Birthday: &now,
 				}
 
-				// the expectation of dao method arguments
 				expectUpdateArg1 := &dao.Member{
 					Name:     req.Name,
 					Birthday: req.Birthday,
 				}
 
-				mockMemberDao.EXPECT().CreateMember(mockCtx, expectUpdateArg1).Return(nil).Times(1)
+				mockMemberDao.EXPECT().UpdateMember(mockCtx, expectUpdateArg1).Return(nil).Times(1)
 			})
 
 			It("no error", func() {
@@ -240,18 +232,16 @@ var _ = Describe("BevisChangServer", func() {
 			})
 
 			Describe("success", func() {
-				// my test case
 				req = &pb.DeleteMemberReq{
 					ID: "1",
 				}
 
-				// the expectation of dao method arguments
 				id, _ := strconv.ParseInt(req.ID, 10, 64)
 				expectDeleteArg1 := &dao.Member{
 					ID: id,
 				}
 
-				mockMemberDao.EXPECT().CreateMember(mockCtx, expectDeleteArg1).Return(nil).Times(1)
+				mockMemberDao.EXPECT().DeleteMember(mockCtx, expectDeleteArg1).Return(nil).Times(1)
 			})
 
 			It("no error", func() {
