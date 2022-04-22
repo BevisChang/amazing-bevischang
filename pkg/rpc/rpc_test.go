@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"testing"
+	"time"
 
 	"github.com/golang/mock/gomock"
 	. "github.com/onsi/ginkgo"
@@ -24,12 +25,14 @@ var _ = Describe("BevisChangServer", func() {
 	var serv BevisChangServer
 	var ctrl *gomock.Controller
 	var mockRecordDao *daomock.MockRecordDAO
+	var mockMemberDao *daomock.MockMemberDAO
 
 	BeforeEach(func() {
 		ctrl = gomock.NewController(GinkgoT())
 		mockRecordDao = daomock.NewMockRecordDAO(ctrl)
 		serv = NewBevisChangServer(BevisChangServerOpt{
 			RecordDao: mockRecordDao,
+			MemberDao: mockMemberDao,
 		})
 	})
 
@@ -122,6 +125,56 @@ var _ = Describe("BevisChangServer", func() {
 					Expect(res).To(BeNil())
 				})
 
+			})
+		})
+	})
+
+	var _ = Describe("Member", func() {
+		var _ = Describe("create", func() {
+
+			var err error
+			var req *pb.CreateMemberReq
+			var res *pb.CreateMemberRes
+
+			JustBeforeEach(func() {
+				res, err = serv.CreateMember(context.Background(), req)
+			})
+
+			Describe("success", func() {
+				// my test case
+				now := time.Now()
+				req = &pb.CreateMemberReq{
+					Name:     "John",
+					Birthday: &now,
+				}
+
+				// the expectation of dao method arguments
+				expectCreateArg1 := &dao.Member{
+					Name:     req.Name,
+					Birthday: req.Birthday,
+				}
+
+				mockMemberDao.EXPECT().CreateMember(mockCtx, expectCreateArg1).Return(nil).Times(1)
+			})
+
+			It("no error", func() {
+				Expect(err).NotTo(HaveOccurred())
+			})
+
+			It("return member", func() {
+
+				expectation := pb.Member{
+					Name:     req.Name,
+					Birthday: req.Birthday,
+				}
+				Expect(res).NotTo(BeNil())
+
+				result := res.Member
+
+				Expect(result).NotTo(BeNil())
+				Expect(result.ID).NotTo(BeNil())
+				Expect(result.Name).To(Equal(expectation.Name))
+				Expect(result.Birthday).To(Equal(expectation.Birthday))
 			})
 		})
 	})
