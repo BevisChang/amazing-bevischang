@@ -137,7 +137,6 @@ func (serv BevisChangServer) CreateMember(ctx context.Context, req *pb.CreateMem
 	}
 
 	resp := pb.CreateMemberRes{Member: m.FormatPb()}
-	//rpcMet.SetGauge([]string{"resp_size"}, float64(unsafe.Sizeof(resp)), map[string]string{})
 
 	return &resp, nil
 }

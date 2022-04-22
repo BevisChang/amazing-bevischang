@@ -2,6 +2,7 @@ package dao
 
 import (
 	"context"
+	"github.com/AmazingTalker/go-rpc-kit/logkit"
 	"gorm.io/gorm"
 	"time"
 
@@ -23,6 +24,7 @@ func (dao MySqlMemberDAO) CreateMember(ctx context.Context, member *Member, enri
 	err := db.Create(member).Error
 
 	if err != nil {
+		logkit.Errorf(ctx, "create member fail", logkit.Payload{"err": err})
 		return err
 	}
 	return nil
@@ -33,7 +35,12 @@ func (dao MySqlMemberDAO) UpdateMember(ctx context.Context, member *Member, enri
 
 	targetMember := Member{}
 	db.First(&targetMember, member.ID)
-	db.Model(&targetMember).Updates(member)
+	err := db.Model(&targetMember).Updates(member).Error
+
+	if err != nil {
+		logkit.Errorf(ctx, "update member fail", logkit.Payload{"err": err})
+		return nil, err
+	}
 
 	return &targetMember, nil
 }
@@ -42,7 +49,13 @@ func (dao MySqlMemberDAO) ListMembers(ctx context.Context, birthdayBefore *time.
 	db, _ := daokit.UseTxOrDB(dao.db, enrich...)
 
 	var members []Member
-	db.Where("birthday <= ?", &birthdayBefore).Find(&members)
+
+	err := db.Where("birthday <= ?", &birthdayBefore).Find(&members).Error
+
+	if err != nil {
+		logkit.Errorf(ctx, "get members fail", logkit.Payload{"err": err})
+		return nil, err
+	}
 
 	return members, nil
 }
@@ -50,7 +63,12 @@ func (dao MySqlMemberDAO) ListMembers(ctx context.Context, birthdayBefore *time.
 func (dao MySqlMemberDAO) DeleteMember(ctx context.Context, id int64, enrich ...daokit.Enrich) error {
 	db, _ := daokit.UseTxOrDB(dao.db, enrich...)
 
-	db.Delete(&Member{}, id)
+	err := db.Delete(&Member{}, id).Error
+
+	if err != nil {
+		logkit.Errorf(ctx, "delete members fail", logkit.Payload{"err": err})
+		return err
+	}
 
 	return nil
 }
