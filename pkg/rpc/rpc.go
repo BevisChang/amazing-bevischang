@@ -161,6 +161,8 @@ func (serv BevisChangServer) UpdateMember(ctx context.Context, req *pb.UpdateMem
 }
 
 func (serv BevisChangServer) ListMembers(ctx context.Context, req *pb.ListMembersReq) (*pb.ListMembersRes, error) {
+	rpcMet.IncrCount([]string{"list_member_call_count"}, float64(1), map[string]string{})
+
 	birthdayBefore, _ := time.Parse(time.RFC3339, req.BirthdayBefore)
 	members, err := serv.memberDao.ListMembers(ctx, &birthdayBefore)
 
