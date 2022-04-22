@@ -3,6 +3,7 @@ package rpc
 import (
 	"context"
 	"errors"
+	"strconv"
 	"testing"
 	"time"
 
@@ -135,6 +136,7 @@ var _ = Describe("BevisChangServer", func() {
 			var err error
 			var req *pb.CreateMemberReq
 			var res *pb.CreateMemberRes
+			now := time.Now()
 
 			JustBeforeEach(func() {
 				res, err = serv.CreateMember(context.Background(), req)
@@ -142,7 +144,7 @@ var _ = Describe("BevisChangServer", func() {
 
 			Describe("success", func() {
 				// my test case
-				now := time.Now()
+
 				req = &pb.CreateMemberReq{
 					Name:     "John",
 					Birthday: &now,
@@ -175,6 +177,85 @@ var _ = Describe("BevisChangServer", func() {
 				Expect(result.ID).NotTo(BeNil())
 				Expect(result.Name).To(Equal(expectation.Name))
 				Expect(result.Birthday).To(Equal(expectation.Birthday))
+			})
+		})
+
+		var _ = Describe("update", func() {
+
+			var err error
+			var req *pb.UpdateMemberReq
+			var res *pb.UpdateMemberRes
+			now := time.Now()
+
+			JustBeforeEach(func() {
+				res, err = serv.UpdateMember(context.Background(), req)
+			})
+
+			Describe("success", func() {
+				// my test case
+
+				req = &pb.UpdateMemberReq{
+					ID:       "1",
+					Name:     "John",
+					Birthday: &now,
+				}
+
+				// the expectation of dao method arguments
+				expectUpdateArg1 := &dao.Member{
+					Name:     req.Name,
+					Birthday: req.Birthday,
+				}
+
+				mockMemberDao.EXPECT().CreateMember(mockCtx, expectUpdateArg1).Return(nil).Times(1)
+			})
+
+			It("no error", func() {
+				Expect(err).NotTo(HaveOccurred())
+			})
+
+			It("return member", func() {
+
+				expectation := pb.Member{
+					Name:     req.Name,
+					Birthday: req.Birthday,
+				}
+				Expect(res).NotTo(BeNil())
+
+				result := res.Member
+
+				Expect(result).NotTo(BeNil())
+				Expect(result.ID).NotTo(BeNil())
+				Expect(result.Name).To(Equal(expectation.Name))
+				Expect(result.Birthday).To(Equal(expectation.Birthday))
+			})
+		})
+
+		var _ = Describe("delete member", func() {
+
+			var err error
+			var req *pb.DeleteMemberReq
+
+			JustBeforeEach(func() {
+				_, err = serv.DeleteMember(context.Background(), req)
+			})
+
+			Describe("success", func() {
+				// my test case
+				req = &pb.DeleteMemberReq{
+					ID: "1",
+				}
+
+				// the expectation of dao method arguments
+				id, _ := strconv.ParseInt(req.ID, 10, 64)
+				expectDeleteArg1 := &dao.Member{
+					ID: id,
+				}
+
+				mockMemberDao.EXPECT().CreateMember(mockCtx, expectDeleteArg1).Return(nil).Times(1)
+			})
+
+			It("no error", func() {
+				Expect(err).NotTo(HaveOccurred())
 			})
 		})
 	})
